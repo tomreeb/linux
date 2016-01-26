@@ -20,7 +20,7 @@ TARTARGET="/tmp/backup/backup-$DATE.tar.gz"
 # MySQL dump
 # you cannot have a space between the option and the password. If you omit the password value
 # following the --password or -p option on the command line, you are prompted for one.
-mysqldump -u wwwuser -pP^g4c0_r! coriell > $MYSQLTARGET
+mysqldump -u wwwuser -p<password> coriell > $MYSQLTARGET
 
 # Create Archive
 tar -czvf $TARTARGET $MYSQLTARGET $JOOMLA
