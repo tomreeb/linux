@@ -8,16 +8,13 @@
 # Instructions: Run locally as root when you first log in
 #
 # Steps not included:
-# 1) Change root passwd
-# 2) install public ssh key from laptop
-# 3) Enalbe Fail2ban module for ssh
+# 
 #
 # Future considerations:
-# - Automate ssh key installation
-# * Ask about configuring firewall ports
+#
+# * Ask about configuring firewall ports // Ansible playbook should configure firewall
 
 echo "yosup? I am a script that will help configure your new VPS!"
-echo "This server is running " cat /etc/redhat-release
 echo "First I am going to ask you a couple of questions"
 #read -p "Enter the IP Address of the VPS: " -r vpsip
 read -p "First things first, let's reset your root password "
@@ -38,7 +35,7 @@ hostnamectl set-hostname $vpshostname
 useradd $serveradminUser
 echo $serveradminPassword | passwd $serveradminUser --stdin > /dev/null 2>&1
 
-echo "$serveradminUser ALL=(ALL) ALL" >> /etc/sudoers
+echo "$serveradminUser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 mkdir /home/$serveradminUser/.ssh/
 chmod 700 /home/$serveradminUser/.ssh/
@@ -47,7 +44,7 @@ echo $pubkey > /home/$serveradminUser/.ssh/authorized_keys
 chmod 600 /home/$serveradminUser/.ssh/authorized_keys
 chown -R $serveradminUser:$serveradminUser /home/$serveradminUser/
 
-# Install EPEL
+# Install EPEL & ius
 
 rpm -Uvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm > /dev/null 2>&1
 rpm -iv http://dl.iuscommunity.org/pub/ius/stable/CentOS/7/x86_64/ius-release-1.0-14.ius.centos7.noarch.rpm > /dev/null 2>&1
@@ -78,13 +75,13 @@ echo "
 RSAAuthentication yes
 PubkeyAuthentication yes
 AuthorizedKeysFile      .ssh/authorized_keys
-AllowUsers root@50.191.168.56 serveradmin
+AllowUsers root@72.92.31.156 serveradmin
 " >> /etc/ssh/sshd_config
 
 # Install Fail2Ban
 systemctl enable fail2ban > /dev/null 2>&1
 cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
-#sed -i 's/ignoreip = 127.0.0.1/8/ignoreip = 127.0.0.1/8 50.232.17.202 50.191.168.56/' /etc/fail2ban/jail.local
+#sed -i 's/ignoreip = 127.0.0.1/8/ignoreip = 127.0.0.1/8 50.232.17.202 72.92.31.156/' /etc/fail2ban/jail.local
 
 echo "
 [sshd]
