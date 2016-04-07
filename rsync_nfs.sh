@@ -16,14 +16,14 @@ mailto=tom@reeb.me
 
 # Let's make sure the destination is mounted
 if [ $(mount | grep -c $destdir) != "1" ]; then
-	mount -t nfs $nfsserver:$nfsexport $destdir
+	mount -t nfs -o rw 3$nfsserver:$nfsexport $destdir
 fi
 
 # Ok now let's do the rsync thing
 # If, for some reason, the backup share still does not mount, we don't want to run the command. So we're going to check again.
 # I'm sure there's a better way to do this...
 if [ $(mount | grep -c $destdir) != "1" ]; then
-	rsync -avuhO $sourcedir $destdir > $logfile
+	rsync -rltzuvHKS $sourcedir $destdir > $logfile
 else
 	echo "ERROR: $destdir is not mounted. Backup did not run." > $logfile
 fi
