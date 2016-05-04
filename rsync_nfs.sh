@@ -16,7 +16,7 @@ mailto=tom@reeb.me
 
 # Let's make sure the destination is mounted
 if [ $(mount | grep -c $destdir) != "1" ]; then
-	mount -t nfs -o rw 3$nfsserver:$nfsexport $destdir
+	mount -t nfs -o rw $nfsserver:$nfsexport $destdir
 fi
 
 # Ok now let's do the rsync thing
