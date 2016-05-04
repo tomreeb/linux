@@ -12,7 +12,6 @@ systemctl start ntpd.service
 
 # Join to AD
 realm join --user=bind@coriell.org coriell.org
-# password is winb1nd@!
 
 # SSSD Configuration
 
