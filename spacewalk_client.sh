@@ -29,6 +29,8 @@ yum -y install perl-Nagios-Plugin rhn-client-tools rhn-check rhn-setup rhnsd m2c
 wget -P /usr/share/rhn http://spacewalk.coriell.org/pub/RHN-ORG-TRUSTED-SSL-CERT
 
 rhnreg_ks --serverUrl=https://spacewalk.coriell.org/XMLRPC --activationkey=1-spacewalk
+# rhnreg_ks --serverUrl=https://spacewalk.coriell.org/XMLRPC --activationkey=1-centos6
+# rhnreg_ks --serverUrl=https://spacewalk.coriell.org/XMLRPC --activationkey=1-centos7
 
 # To re-register a client (after a clone, etc) use this command:
 # sudo rhnreg_ks --serverUrl=https://spacewalk.coriell.org/XMLRPC --activationkey=1-spacewalk --force
