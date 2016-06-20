@@ -39,13 +39,10 @@ if [ "$days_exp" -gt "$exp_limit" ] ; then
 else
 	# Do the thing
     echo "The certificate for $domain is about to expire soon. Starting Let's Encrypt (HAProxy:$http_01_port) renewal script..."
-	$le_path/certbot-auto certonly --agree-tos --renew-by-default --standalone --http-01-port $http_01_port -d $domain
+	$le_path/certbot-auto certonly -n --agree-tos --renew-by-default --standalone --pre-hook "systemctl stop haproxy.service" --post-hook "systemctl start haproxy.service" -d $domain
     # Combine cert and key
 	echo "Creating $combined_file with latest certs..."
 	sudo bash -c "cat /etc/letsencrypt/live/$domain/fullchain.pem /etc/letsencrypt/live/$domain/privkey.pem > $combined_file"
-    # Reload service
-	echo "Reloading $service"
-	systemctl reload $service.service
 	echo "Renewal process finished for domain $domain"
 	exit 0;
 fi
