@@ -10,7 +10,6 @@
 
 service='haproxy'
 domain=$1
-http_01_port='54321'
 combined_file="/etc/haproxy/certs/${domain}.pem"
 
 le_path='/opt/letsencrypt'
@@ -37,11 +36,9 @@ if [ "$days_exp" -gt "$exp_limit" ] ; then
 	echo "The certificate for $domain is up to date, no need for renewal ($days_exp days left)." 
 	exit 0;
 else
-	# Backup old certs
-	mv "/etc/letsencrypt/live/$domain/" "/etc/letsencrypt/backup/$domain/"
 	# Do the thing
-    echo "The certificate for $domain is about to expire soon. Starting Let's Encrypt (HAProxy:$http_01_port) renewal script..."
-	$le_path/certbot-auto certonly -n --agree-tos --renew-by-default --standalone --pre-hook "systemctl stop haproxy.service" --post-hook "systemctl start haproxy.service" -d $domain
+    echo "The certificate for $domain is about to expire soon. Starting Let's Encrypt for HAProxy renewal script..."
+	$le_path/certbot-auto certonly -n --agree-tos --renew-by-default --standalone --pre-hook "systemctl stop $service.service" --post-hook "systemctl start $service.service" -d $domain
     # Combine cert and key
 	echo "Creating $combined_file with latest certs..."
 	sudo bash -c "cat /etc/letsencrypt/live/$domain/fullchain.pem /etc/letsencrypt/live/$domain/privkey.pem > $combined_file"
