@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # HAProxy Upgrade Script!
 #
@@ -10,7 +10,7 @@
 # - Added root user check
 # - Added support for EL7 systems
 # - Added support for versions greater than 1.5
-# - Added support to pass version as command line argument i.e. "$ ./haproxy_update.sh 1.6.1"
+# - Added support to pass version as command line arg i.e. "$ ./haproxy_update.sh 1.6.1"
 #
 
 # Check Root user
