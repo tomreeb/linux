@@ -33,4 +33,4 @@ fi
 mail -S smtp=$smtp -S from=$mailfrom -s "Share Backup - $DATE" $mailto < $logfile
 
 # While we're at it, we should clean up the logs (We'll keep a weeks worth of logs)
-find /var/log/backup-* -type f -mtime +7 | xargs rm
+find /var/log/sharebackup-* -type f -mtime +7 | xargs rm
