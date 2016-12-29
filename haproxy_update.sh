@@ -11,7 +11,12 @@
 # - Added support for EL7 systems
 # - Added support for versions greater than 1.5
 # - Added support to pass version as command line arg i.e. "$ ./haproxy_update.sh 1.6.1"
+# Version 1.3 updated December 29th 2016
+# - Added support for 1.7
 #
+# Would like to do two things:
+# 1) Figure out for myself what the latest version of HAProxy is
+# 2) Change the way the file downloads by splitting the version string into major release and version
 
 # Check Root user
 if [ `whoami` != 'root' ]; then
@@ -24,7 +29,7 @@ fi
 # Setting the version to upgrade to
 haproxyver="$1"
 if [[ -z "$1" ]]; then
-read -p "What is the latest version of HAProxy? [e.g. 1.6.1]: " -r haproxyver
+read -p "What is the latest version of HAProxy? [e.g. 1.7.1]: " -r haproxyver
 fi
 echo "This will install HAProxy version $haproxyver"
 read -p "Are you sure you want to continue? " -n 1 -r
@@ -34,13 +39,16 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 fi
 
 # Download the File
-if [[ "$haproxyver" == 1.5* ]]
-then 
-	wget -P /tmp/ http://www.haproxy.org/download/1.5/src/haproxy-$haproxyver.tar.gz
-elif [[ "$haproxyver" == 1.6* ]]
-then 
+if [[ "$haproxyver" >= 1.7 ]]
+then
+	wget -P /tmp/ http://www.haproxy.org/download/1.7/src/haproxy-$haproxyver.tar.gz
+elif [[ "$haproxyver" >= 1.6 ]]
+then
 	wget -P /tmp/ http://www.haproxy.org/download/1.6/src/haproxy-$haproxyver.tar.gz
-else 
+elif [[ "$haproxyver" >= 1.5 ]]
+then
+	wget -P /tmp/ http://www.haproxy.org/download/1.5/src/haproxy-$haproxyver.tar.gz
+else
 	echo "I'm sorry, $haproxyver is not supported at this time."
 	exit 1
 fi
@@ -64,11 +72,11 @@ rm -rf /tmp/haproxy*
 
 # Start Service and ensure it is enabled to autostart
 if grep -q -i "release 6" /etc/redhat-release
-	then 
+	then
 		chkconfig haproxy on
 		service haproxy start
 elif grep -q -i "release 7" /etc/redhat-release
-	then 
+	then
 		systemctl enable haproxy.service
 		systemctl start haproxy.service
 fi
