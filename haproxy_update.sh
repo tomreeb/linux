@@ -39,13 +39,13 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 fi
 
 # Download the File
-if [[ "$haproxyver" >= 1.7 ]]
+if [[ "$haproxyver" == 1.7* ]]
 then
 	wget -P /tmp/ http://www.haproxy.org/download/1.7/src/haproxy-$haproxyver.tar.gz
-elif [[ "$haproxyver" >= 1.6 ]]
+elif [[ "$haproxyver" == 1.6* ]]
 then
 	wget -P /tmp/ http://www.haproxy.org/download/1.6/src/haproxy-$haproxyver.tar.gz
-elif [[ "$haproxyver" >= 1.5 ]]
+elif [[ "$haproxyver" == 1.5* ]]
 then
 	wget -P /tmp/ http://www.haproxy.org/download/1.5/src/haproxy-$haproxyver.tar.gz
 else
