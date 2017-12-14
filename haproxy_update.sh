@@ -13,6 +13,8 @@
 # - Added support to pass version as command line arg i.e. "$ ./haproxy_update.sh 1.6.1"
 # Version 1.3 updated December 29th 2016
 # - Added support for 1.7
+# Version 1.4 updated December 14th 2017
+# - Adding support for 1.8 & 1.9, even though it's stupid and dirty
 #
 # Would like to do two things:
 # 1) Figure out for myself what the latest version of HAProxy is
@@ -39,7 +41,13 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 fi
 
 # Download the File
-if [[ "$haproxyver" == 1.7* ]]
+if [[ "$haproxyver" == 1.9* ]]
+then
+	wget -P /tmp/ http://www.haproxy.org/download/1.9/src/haproxy-$haproxyver.tar.gz
+elif [[ "$haproxyver" == 1.8* ]]
+then
+	wget -P /tmp/ http://www.haproxy.org/download/1.8/src/haproxy-$haproxyver.tar.gz
+elif [[ "$haproxyver" == 1.7* ]]
 then
 	wget -P /tmp/ http://www.haproxy.org/download/1.7/src/haproxy-$haproxyver.tar.gz
 elif [[ "$haproxyver" == 1.6* ]]
